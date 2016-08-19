@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by ligs on 8/11/16.
  */
-public class LogDetector extends Detector implements Detector.ClassScanner {
+public class LogDetector extends Detector implements Detector.ClassScanner, Detector.JavaScanner {
 
     public static final Issue ISSUE = Issue.create("LogChecker",
             "Please use LogUtil",
@@ -28,12 +28,18 @@ public class LogDetector extends Detector implements Detector.ClassScanner {
             Severity.ERROR,
             new Implementation(LogDetector.class, Scope.CLASS_FILE_SCOPE));
 
+    /////ClassScanner///////
     public List<String> getApplicableCallNames() {
         return Arrays.asList("e", "d", "i", "w", "wtf");
     }
 
+    public List<String> getApplicableCallOwners() {
+        return Arrays.asList("cn/demonk/lint/test/MainActivity");
+    }
+
     public void checkCall(ClassContext classContext, ClassNode classNode, MethodNode methodNode, MethodInsnNode methodinsnNode) {
         String owner = methodinsnNode.owner;
+        System.out.println("owner=" + owner);
         if ("android/util/Log".equals(owner)) {
             classContext.report(ISSUE,
                     methodNode,
@@ -42,5 +48,11 @@ public class LogDetector extends Detector implements Detector.ClassScanner {
                     "You shouldn't use Log directly");
         }
     }
+    /////ClassScanner///////
+
+
+    /////JavaScanner///////
+
+
 
 }

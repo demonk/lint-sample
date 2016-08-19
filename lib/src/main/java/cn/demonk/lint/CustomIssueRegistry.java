@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.demonk.lint.rules.LogDetector;
+import cn.demonk.lint.rules.PersistHelperDetector;
 
 /**
  * Created by ligs on 8/11/16.
@@ -18,6 +19,7 @@ public class CustomIssueRegistry extends IssueRegistry {
         ArrayList<Issue> list = new ArrayList<Issue>();
         //添加需要检查的规则
         list.add(LogDetector.ISSUE);
+        list.add(PersistHelperDetector.ISSUE);
 
         return list;
     }
