@@ -9,6 +9,7 @@ import java.util.List;
 import cn.demonk.lint.rules.LogDetector;
 import cn.demonk.lint.rules.Persist;
 import cn.demonk.lint.rules.PersistHelperDetector;
+import cn.demonk.lint.rules.ResourceDetector;
 
 /**
  * Created by ligs on 8/11/16.
@@ -21,7 +22,8 @@ public class CustomIssueRegistry extends IssueRegistry {
         //添加需要检查的规则
 //        list.add(LogDetector.ISSUE);
 //        list.add(PersistHelperDetector.ISSUE);
-        list.add(Persist.ISSUE);
+//        list.add(Persist.ISSUE);
+        list.add(ResourceDetector.ISSUE);
 
         return list;
     }
