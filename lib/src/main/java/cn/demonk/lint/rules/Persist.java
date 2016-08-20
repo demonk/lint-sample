@@ -63,6 +63,7 @@ public class Persist extends Detector implements Detector.JavaScanner {
             @Override
             public boolean visitIf(If node) {
                 //... 在这里对if语句做你需要的检查
+                System.out.println("if===================");
 
                 return super.visitIf(node);
             }
@@ -101,7 +102,7 @@ public class Persist extends Detector implements Detector.JavaScanner {
     //时机：try,if ,for 以及创建新对象时（构建方法invoke时）
     @Override
     public List<Class<? extends Node>> getApplicableNodeTypes() {
-        return Arrays.asList(Try.class, If.class, For.class, ConstructorInvocation.class/*, Annotation.class/*, MethodInvocation.class*/);
+        return Arrays.asList(Try.class, For.class, ConstructorInvocation.class/*, Annotation.class/*, MethodInvocation.class*/);
     }
     //////////////////////////////////////////////////////
 
@@ -118,26 +119,16 @@ public class Persist extends Detector implements Detector.JavaScanner {
         JavaParser.ResolvedMethod method = (JavaParser.ResolvedMethod) javaContext.resolve(methodInvocation);
         JavaParser.ResolvedClass clazz = method.getContainingClass();
 
-        if (methodName.equals("put") && clazz.getName().equals("cn.demonk.lint.PersistHelper")) {
+        if (methodName.equals("put") && clazz.getName().equals("cn.demonk.lint.test.persist.PersistHelper")) {
             System.out.println("found put method");
 
             StrictListAccessor<Expression, MethodInvocation> params = methodInvocation.astArguments();
-
-            Node node = methodInvocation;
-            while (node.hasParent()) {
-                node = node.getParent();
-//                System.out.println("node=" + node);
-            }
 
             Iterator<Expression> it = params.iterator();
 
             while (it.hasNext()) {
                 Expression ex = it.next();
                 JavaParser.ResolvedField field = (JavaParser.ResolvedField) javaContext.resolve(ex);
-//                System.out.println(field.getType());
-//                System.out.println(field.getName());
-//                System.out.println(field.getValue());
-
                 Iterable iterable = field.getAnnotations();
 
                 if (iterable != null) {

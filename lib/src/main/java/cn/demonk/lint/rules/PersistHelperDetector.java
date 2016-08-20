@@ -43,13 +43,13 @@ public class PersistHelperDetector extends Detector implements Detector.JavaScan
         //使用这个类里的方法进行处理
         return new ForwardingAstVisitor() {
 
-//            public boolean visitNode(Node node) {
+            public boolean visitNode(Node node) {
 //                int i = 0;
 //                for (Node c : node.getChildren()) {
 //                    System.out.println((i++) + ":node=" + c.toString());
 //                }
-//                return false;
-//            }
+                return false;
+            }
 
             @Override
             public boolean visitTry(Try node) {
@@ -61,12 +61,11 @@ public class PersistHelperDetector extends Detector implements Detector.JavaScan
 
             @Override
             public boolean visitFor(For node) {
-                //... 在这里对for语句做你需要的检查
-//                System.out.println("for");
                 Node body = node.getChildren().get(node.getChildren().size() - 1);
-                JavaParser.ResolvedNode bodyNode = javaContext.resolve(node);
-
-                System.out.println("for="+bodyNode.toString());
+                String content = body.toString().replaceAll("\n", "");
+                if (!(content.startsWith("{") && content.endsWith("}"))) {
+                    javaContext.report(ISSUE, javaContext.getLocation(node), "for should wrap with {}");
+                }
 
                 return super.visitFor(node);
             }

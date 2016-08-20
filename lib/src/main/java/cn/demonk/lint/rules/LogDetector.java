@@ -39,7 +39,7 @@ public class LogDetector extends Detector implements Detector.ClassScanner, Dete
 
     public void checkCall(ClassContext classContext, ClassNode classNode, MethodNode methodNode, MethodInsnNode methodinsnNode) {
         String owner = methodinsnNode.owner;
-        System.out.println("owner=" + owner);
+//        System.out.println("owner=" + owner);
         if ("android/util/Log".equals(owner)) {
             classContext.report(ISSUE,
                     methodNode,
